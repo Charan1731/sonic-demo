@@ -1,24 +1,40 @@
 {
-  "name": "seat-demo",
+  "name": "@sonic-sdk-1.0",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "build:lib": "tsup src/index.ts --format esm,cjs --dts --clean"
   },
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "sideEffects": false,
   "dependencies": {
     "@clerk/nextjs": "^6.36.3",
+    "@radix-ui/react-slot": "^1.2.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
     "lucide-react": "^0.561.0",
     "next": "16.0.10",
     "react": "19.2.1",
+    "react-day-picker": "^9.12.0",
     "react-dom": "19.2.1",
     "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {
+    "tsup": "^8.0.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

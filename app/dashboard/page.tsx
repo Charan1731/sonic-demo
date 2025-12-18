@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import { useUser } from '@clerk/nextjs';
 import Link from 'next/link';
 import { useDashboardState } from '@/components/DashboardState';
+import { SonicWidget } from '@/src';
 
 export default function DashboardPage() {
   const { user, isLoaded } = useUser();
@@ -86,29 +87,46 @@ export default function DashboardPage() {
             </p>
           )}
         </div>
-        <button
-          type="button"
-          onClick={() => {
-            if (!isLoaded || !user) return;
-            const email = user.primaryEmailAddress?.emailAddress;
-            if (!email) return;
-            void loadDashboard(email);
-          }}
-          disabled={loading}
+        <div
           style={{
-            padding: '0.6rem 1.4rem',
-            borderRadius: '999px',
-            border: '1px solid #000000',
-            backgroundColor: loading ? '#ffffff' : '#000000',
-            color: loading ? '#000000' : '#ffffff',
-            fontSize: '0.9rem',
-            fontWeight: 600,
-            cursor: loading ? 'default' : 'pointer',
-            opacity: loading ? 0.6 : 1,
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.75rem',
+            flexWrap: 'wrap',
           }}
         >
-          {loading ? 'Connecting…' : result ? 'Reconnect to Sonic' : 'Connect to Sonic'}
-        </button>
+          <button
+            type="button"
+            onClick={() => {
+              if (!isLoaded || !user) return;
+              const email = user.primaryEmailAddress?.emailAddress;
+              if (!email) return;
+              void loadDashboard(email);
+            }}
+            disabled={loading}
+            style={{
+              padding: '0.6rem 1.4rem',
+              borderRadius: '999px',
+              border: '1px solid #000000',
+              backgroundColor: loading ? '#ffffff' : '#000000',
+              color: loading ? '#000000' : '#ffffff',
+              fontSize: '0.9rem',
+              fontWeight: 600,
+              cursor: loading ? 'default' : 'pointer',
+              opacity: loading ? 0.6 : 1,
+            }}
+          >
+            {loading ? 'Connecting…' : result ? 'Reconnect to Sonic' : 'Connect to Sonic'}
+          </button>
+          {user?.primaryEmailAddress?.emailAddress && process.env.NEXT_PUBLIC_SONIC_API_KEY && (
+            <SonicWidget
+              apiKey={process.env.NEXT_PUBLIC_SONIC_API_KEY}
+              user={{ email: user.primaryEmailAddress.emailAddress }}
+              env="development"
+              buttonLabel="Open Sonic Seat Widget"
+            />
+          )}
+        </div>
       </div>
 
       {error && (

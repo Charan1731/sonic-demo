@@ -1,6 +1,6 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+## Getting Started (Demo App)
 
 First, run the development server:
 
@@ -19,6 +19,56 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+
+## Sonic Widget Library
+
+This project also contains a self-contained, embeddable Sonic widget that can be packaged as a reusable npm library.
+
+- Entry point: `src/index.ts`
+- Main React component: `SonicWidget`
+- Imperative initializer for non-React hosts: `initSonicWidget`
+
+### Building the library
+
+The library build (ESM + CJS + type definitions) is handled by [tsup](https://github.com/egoist/tsup):
+
+```bash
+npm run build:lib
+```
+
+This will emit tree-shakeable outputs under `dist/`.
+
+### Basic React usage
+
+```tsx
+import { SonicWidget } from '@sonic/widget';
+
+function App() {
+  return (
+    <SonicWidget
+      apiKey="SONIC_API_KEY"
+      user={{ email: 'user@example.com' }}
+      env="development"
+      theme={{ mode: 'light' }}
+    />
+  );
+}
+```
+
+### Basic non-React usage
+
+```ts
+import { initSonicWidget } from '@sonic/widget';
+
+initSonicWidget({
+  target: '#sonic-widget-button',
+  apiKey: 'SONIC_API_KEY',
+  user: { email: 'user@example.com' },
+  env: 'development',
+});
+```
+
+> Note: The package is not published; these examples illustrate the intended public API once published.
 
 ## Learn More
 
